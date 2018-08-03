@@ -28,7 +28,7 @@
 
     <groupId>com.github.pagehelper</groupId>
     <artifactId>pagehelper</artifactId>
-    <version>5.1.4</version>
+    <version>5.1.5</version>
     <packaging>jar</packaging>
 
     <name>pagehelper 5</name>
@@ -229,11 +229,11 @@
             <distributionManagement>
                 <snapshotRepository>
                     <id>oss</id>
-                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+                    <url>http://220.248.226.76:52001/nexus/content/repositories/thirdparty/</url>
                 </snapshotRepository>
                 <repository>
                     <id>oss</id>
-                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                    <url>http://220.248.226.76:52001/nexus/content/repositories/thirdparty/</url>
                 </repository>
             </distributionManagement>
         </profile>

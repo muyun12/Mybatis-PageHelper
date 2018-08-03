@@ -1,0 +1,10 @@
+pluginManagement {
+  repositories {
+      maven {
+        url 'http://220.248.226.76:52001/nexus/content/groups/public/'
+      }
+      gradlePluginPortal()
+  }
+}
+
+rootProject.name = 'pagehelper'

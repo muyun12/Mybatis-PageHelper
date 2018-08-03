@@ -1,0 +1,82 @@
+plugins {
+    id 'java'
+    id 'maven'
+    id 'jacoco'
+    id 'org.sonarqube' version '2.6.2'
+}
+
+repositories {
+    maven{ url "http://220.248.226.76:52001/nexus/content/groups/public/" }
+    mavenCentral();
+    jcenter()
+}
+
+dependencies {
+    compile 'com.github.jsqlparser:jsqlparser:1.0'
+    compile 'org.mybatis:mybatis:3.4.6'
+    compile 'com.google.guava:guava:19.0'
+
+    testCompile 'org.jmockit:jmockit:1.39'
+    testCompile 'junit:junit:4.12'
+}
+
+compileJava {
+    sourceCompatibility = 1.6
+    targetCompatibility = 1.6
+    options.encoding = 'UTF-8'
+}
+
+compileTestJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    options.encoding = 'UTF-8'
+    options.compilerArgs += "-parameters"
+}
+
+group = 'com.github.pagehelper'
+version = '5.1.4-bugfix'
+
+jacoco {
+    toolVersion = "0.7.9"
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectVersion", project.version + "_" + new Date().format('yyyyMMddHHmmss')
+    }
+}
+
+task commonsJar(type:Jar){
+     from sourceSets.main.output
+     destinationDir file("$buildDir/libs")
+     includes ['com/wtyt/**']
+     manifest {
+         attributes 'Package-Name': project.name, 'Built-By': project.group,'Built-Date': new Date().format('yyyy-MM-dd HH:mm:ss'),'Manifest-Version':project.version
+     }
+}
+
+task commonsSourceJar(type:Jar){
+     classifier "sources"
+     from sourceSets.main.allSource
+     destinationDir file("$buildDir/libs")
+     includes ['com/wtyt/**']
+     manifest {
+         attributes 'Package-Name': project.name + '-sources', 'Built-By': project.group,'Built-Date': new Date().format('yyyy-MM-dd HH:mm:ss'),'Manifest-Version': project.version
+     }
+}
+
+artifacts{
+    archives commonsSourceJar
+}
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "http://220.248.226.76:52001/nexus/content/repositories/thirdparty/") {
+                authentication(userName: "deployment", password: "wtyt123")
+            }
+            pom.version = "$project.version"
+            pom.artifactId = "$project.name"
+            pom.groupId = "$project.group"
+        }
+    }
+}
